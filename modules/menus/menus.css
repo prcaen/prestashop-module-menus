@@ -1,0 +1,11 @@
+#navigation {
+	display:inline-block;
+	text-align: center;
+}
+
+#navigation li {
+	display: inline-block;
+}
+#navigation li ul {
+	display:none;
+}

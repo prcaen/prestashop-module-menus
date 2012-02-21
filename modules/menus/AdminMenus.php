@@ -26,6 +26,7 @@ class AdminMenus extends AdminTab
 		$this->fieldsDisplay = array(
 			'id_menu'		=> array('title' => $this->l('ID'), 'align' => 'center', 'width' => 25),
 			'h!name'		=> array('title' => $this->l('Hook'), 'align' => 'center', 'width' => 35),
+			'logged' 		=> array('title' => $this->l('Logged'), 'align' => 'center', 'width' => 70),
 			'css_id'		=> array('title' => $this->l('CSS id'), 'align' => 'center', 'width' => 310),
 			'css_class' => array('title' => $this->l('CSS class'), 'align' => 'center', 'width' => 310),
 			'a!active'	=> array('title' => $this->l('Displayed'), 'active' => 'status', 'filter_key' => 'a!active', 'align' => 'center', 'type' => 'bool', 'orderby' => false)
@@ -71,6 +72,7 @@ class AdminMenus extends AdminTab
 
 		$id_menu	 = $this->getFieldValue($obj, 'id');
 		$id_hook	 = $this->getFieldValue($obj, 'id_hook');
+		$logged		 = $this->getFieldValue($obj, 'logged');
 		$active		 = $this->getFieldValue($obj, 'active');
 		$css_id		 = $this->getFieldValue($obj, 'css_id');
 		$css_class = $this->getFieldValue($obj, 'css_class');
@@ -97,6 +99,13 @@ class AdminMenus extends AdminTab
 				<div class="margin-form">
 					<input type="text" name="css_class" value="'.$css_class.'" id="css_class" />
 				</div>
+				<label>'.$this->l('User must be logged:').' </label>
+				<div class="margin-form">
+					<input type="radio" name="logged" id="logged_on" value="1" '.($logged ? 'checked="checked" ' : '').'/>
+					<label class="t" for="logged_on"><img src="../img/admin/enabled.gif" alt="'.$this->l('Enabled').'" title="'.$this->l('Enabled').'" /></label>
+					<input type="radio" name="logged" id="logged_off" value="0" '.(!$logged ? 'checked="checked" ' : '').'/>
+					<label class="t" for="logged_off"><img src="../img/admin/disabled.gif" alt="'.$this->l('Disabled').'" title="'.$this->l('Disabled').'" /></label>
+				</div>
 				<label>'.$this->l('Displayed:').' </label>
 				<div class="margin-form">
 					<input type="radio" name="active" id="active_on" value="1" '.($active ? 'checked="checked" ' : '').'/>
@@ -117,7 +126,7 @@ class AdminMenus extends AdminTab
 	
 	public function postProcess()
 	{
-		if(Tools::isSubmit('submitAddmenu_link') || Tools::isSubmit('submitDelmenu_link') || isset($_GET['deletemenu_link']) || isset($_GET['duplicatemenu_link']))
+		if(Tools::isSubmit('submitAddmenu_link') || Tools::isSubmit('submitDelmenu_link') || isset($_GET['deletemenu_link']) || isset($_GET['duplicatemenu_link']) || (isset($_GET['position']) && isset($_GET['id_menu_link'])))
 			$this->adminMenuLink->postProcess($this->token);
 		else
 		{
