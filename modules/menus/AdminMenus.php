@@ -120,7 +120,38 @@ class AdminMenus extends AdminTab
 		if(Tools::isSubmit('submitAddmenu_link') || Tools::isSubmit('submitDelmenu_link') || isset($_GET['deletemenu_link']) || isset($_GET['duplicatemenu_link']))
 			$this->adminMenuLink->postProcess($this->token);
 		else
-			parent::postProcess();
+		{
+			if(Tools::isSubmit('submitAddmenu'))
+			{
+				$module = Module::getInstanceByName('menus');
+
+				if(isset($_POST['id_menu']))
+				{
+					$id_menu = (int)Tools::getValue('id_menu');
+					$menu = new Menu($id_menu);
+					$id_hook = $menu->id_hook;
+					$module->unregisterHook($id_hook);
+				}
+
+				$id_hook = (int)(Tools::getValue('id_hook'));
+				$hook = new Hook($id_hook);
+				
+				if(!Validate::isLoadedObject($module))
+					$this->_errors[] = Tools::displayError('module cannot be loaded');
+				elseif (!$id_hook OR !Validate::isLoadedObject($hook))
+					$this->_errors[] = Tools::displayError('Hook cannot be loaded.');
+				elseif (!$module->registerHook($hook->name))
+					$this->_errors[] = Tools::displayError('An error occurred while transplanting module to hook.');
+				elseif (Hook::getModuleFromHook($id_hook, $id_module))
+					$this->_errors[] = Tools::displayError('This module is already transplanted to this hook.');
+				elseif (!$module->isHookableOn($hook->name))
+					$this->_errors[] = Tools::displayError('This module cannot be transplanted to this hook.');
+				else
+					parent::postProcess();
+			}
+			else
+				parent::postProcess();
+		}
 	}
 	
 	public function displayErrors()

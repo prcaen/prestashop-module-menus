@@ -2,6 +2,8 @@
 if (!defined('_PS_VERSION_'))
 	exit;
 
+include_once _PS_MODULE_DIR_ . 'menus/backend/classes/Menu.php';
+
 class Menus extends Module
 {
 	public function __construct()
@@ -106,8 +108,13 @@ class Menus extends Module
 
 	public function hookHeader()
 	{
-		global $smarty;
+		global $smarty, $cookie;
 
+		$vars = array(
+			'path' => $this->_path,
+			'id_lang' => (int)$cookie->id_lang,
+			'logged' => isset($cookie->id_customer) && $cookie->isLogged() ? true : false,
+		);
 		Tools::addCSS($this->_path . $this->name . '.css', 'all');
 		Tools::addJS($this->_path	 . $this->name . '.js');
 
@@ -120,16 +127,449 @@ class Menus extends Module
 		{
 			$smarty->assign('HOOK_MENU_FOOTER', Module::hookExec('menuFooter'));
 		}
+
+		$smarty->assign('menu', $vars);
 	}
 
-	public function hookMenuTop()
+	/* All hooks */
+	public function allHooks($params, $function_name)
 	{
-		
+		global $smarty, $cookie;
+
+		$hookname = explode('hook', $function_name);
+		$hookname = $hookname[1];
+		$id_hook = Hook::get($hookname);
+		$menu = Menu::getMenuFromIdHook($id_hook);
+		$id_menu = $menu->id;
+
+		$smarty->assign('links', Menu::getLinksForView((int)$id_menu, (int)$cookie->id_lang));
+
+		if (file_exists(_PS_THEME_DIR_ . 'modules/'. $this->name .'/menu_tree.tpl'))
+			$smarty->assign('menu_tpl_tree', _PS_THEME_DIR_ . 'modules/' . $this->name . '/menu_tree.tpl');
+		else
+			$smarty->assign('menu_tpl_tree', _PS_MODULE_DIR_ . $this->name . '/menu_tree.tpl');
+
+		return $this->display(__FILE__, 'menus.tpl');
 	}
 
-	public function hookMenuFooter()
+	public function hookMenuTop($params)
 	{
-		
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookPayment($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookNewOrder($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookPaymentConfirm($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookPaymentReturn($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookUpdateQuantity($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookRightColumn($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookLeftColumn($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookHome($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookCart($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookAuthentication($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookAddProduct($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookTop($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookExtraRight($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookDeleteProduct($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookInvoice($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookUpdateOrderStatus($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookAdminOrder($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookFooter($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookPDFInvoice($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookAdminCustomers($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookOrderConfirmation($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookCreateAccount($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookCustomerAccount($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookOrderSlip($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookProductTab($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookProductTabContent($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookShoppingCart($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookCreateAccountForm($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookAdminStatsModules($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookGraphEngine($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookOrderReturn($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookProductActions($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookBackOfficeHome($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookGridEngine($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookWatermark($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookCancelProduct($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookExtraLeft($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookProductOutOfStock($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookUpdateProductAttribute($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookExtraCarrier($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookShoppingCartExtra($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookSearch($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookBackBeforePayment($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookUpdateCarrier($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookPostUpdateOrderStatus($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookCreateAccountTop($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookBackOfficeHeader($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookBackOfficeTop($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookBackOfficeFooter($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookDeleteProductAttribute($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookProcessCarrier($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookOrderDetail($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookBeforeCarrier($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookOrderDetailDisplayed($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookPaymentCCAdded($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookExtraProductComparison($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookCategoryAddition($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookCategoryUpdate($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookCategoryDeletion($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookBeforeAuthentication($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookPaymentTop($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookAfterCreateHtaccess($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookAfterSaveAdminMeta($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookAttributeGroupForm($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookAfterSaveAttributeGroup($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookAfterDeleteAttributeGroup($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookFeatureForm($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookAfterSaveFeature($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookAfterDeleteFeature($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookAfterSaveProduct($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookProductListAssign($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookPostProcessAttributeGroup($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookPostProcessFeature($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookFeatureValueForm($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookPostProcessFeatureValue($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookAfterDeleteFeatureValue($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookAfterSaveFeatureValue($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookAttributeForm($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookPostProcessAttribute($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookAfterDeleteAttribute($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookAfterSaveAttribute($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookFrontCanonicalRedirect($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
+	}
+
+	public function hookMyAccountBlock($params)
+	{
+		$this->allHooks($params, __FUNCTION__);
 	}
 
 	private function _postProcess()
