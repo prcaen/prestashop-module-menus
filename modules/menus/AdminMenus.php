@@ -21,14 +21,14 @@ class AdminMenus extends AdminTab
 		$this->add			 = true;
 		$this->edit			 = true;
 		$this->delete		 = true;
-		$this->duplicate = true;
+		$this->duplicate = false;
 
 		$this->fieldsDisplay = array(
 			'id_menu'		=> array('title' => $this->l('ID'), 'align' => 'center', 'width' => 25),
 			'h!name'		=> array('title' => $this->l('Hook'), 'align' => 'center', 'width' => 35),
-			'logged' 		=> array('title' => $this->l('Logged'), 'align' => 'center', 'width' => 70),
-			'css_id'		=> array('title' => $this->l('CSS id'), 'align' => 'center', 'width' => 310),
-			'css_class' => array('title' => $this->l('CSS class'), 'align' => 'center', 'width' => 310),
+			'logged' 		=> array('title' => $this->l('Logged'), 'align' => 'center', 'width' => 65),
+			'css_id'		=> array('title' => $this->l('CSS id'), 'align' => 'center', 'width' => 270),
+			'css_class' => array('title' => $this->l('CSS class'), 'align' => 'center', 'width' => 270),
 			'a!active'	=> array('title' => $this->l('Displayed'), 'active' => 'status', 'filter_key' => 'a!active', 'align' => 'center', 'type' => 'bool', 'orderby' => false)
 		);
 		$this->_join = '
@@ -120,8 +120,11 @@ class AdminMenus extends AdminTab
 		</form>
 		<div style="margin:10px">&nbsp;</div>';
 
-		echo '<h2>'.$this->l('Links in this menu').'</h2>';
-		$this->adminMenuLink->display($this->token);
+		if($id_menu)
+		{
+			echo '<h2>'.$this->l('Links in this menu').'</h2>';
+			$this->adminMenuLink->display($this->token);
+		}
 	}
 	
 	public function postProcess()
