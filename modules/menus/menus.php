@@ -44,14 +44,14 @@ class Menus extends Module
 			'name'		=> 'MENU_CACHE_REFRESH',
 			'id'			=> 'cache_refresh',
 			'title'		=> $this->l('Time refresh cache'),
-			'type'		=> 'text',
+			'type'		=> 'none',
 			'default' => 8600
 			),
 			3 => array(
 			'name'		=> 'MENU_CACHE_LATEST',
 			'id'			=> 'cache_latest',
 			'title'		=> $this->l('Cache latest'),
-			'type'		=> 'text',
+			'type'		=> 'none',
 			'default' => 1
 			)
 		);
@@ -100,18 +100,40 @@ class Menus extends Module
 
 	public function getContent()
 	{
+		$output = '<h2>'.$this->displayName.'</h2>';
+		$this->_postProcess();
+		return $output.$this->displayForm();
+	}
+
+	public function displayForm()
+	{
 		global $smarty;
 
-		foreach($this->_configs as &$config)
+		foreach($this->_configs as $key => &$config)
 		{
-			$config['value'] = Configuration::get($config['name']);
+			if($config['type'] == 'none')
+				unset($this->_configs[$key]);
+			else
+				$config['value'] = Configuration::get($config['name']);
 		}
-
+		
 		$smarty->assign('action', Tools::safeOutput($_SERVER['REQUEST_URI']));
 		$smarty->assign('module_dir', $this->_path);
 		$smarty->assign('configs', $this->_configs);
 
-		echo $smarty->display($this->_tpl);
+		return $smarty->fetch($this->_tpl);
+	}
+	private function _postProcess()
+	{
+		if(Tools::isSubmit('submit_menus'))
+		{
+			foreach($this->_configs as $config)
+			{
+				if($config['type'] != 'none')
+					Configuration::updateValue($config['name'], Tools::getValue($config['id']));
+			}
+			echo '<div class="conf confirm"><img src="../img/admin/ok.gif" alt="'.$this->l('Confirmation').'" />'.$this->l('Settings updated').'</div>';
+		}
 	}
 
 	public function hookHeader()
@@ -131,11 +153,6 @@ class Menus extends Module
 		$smarty->assign('HOOK_MENU_FOOTER', Module::hookExec('menuFooter'));
 
 		$smarty->assign('module_menus', $vars);
-	}
-
-	private function _postProcess()
-	{
-		
 	}
 
 	private function _installTables()
