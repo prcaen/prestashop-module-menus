@@ -40,7 +40,7 @@ class Menu extends ObjectModel
 
 	public static function getMenuFromIdHook($id_hook)
 	{
-		$sql = 'SELECT m.`id_menu` FROM `' . _DB_PREFIX_ . 'menu` m';
+		$sql = 'SELECT m.`id_menu` FROM `' . _DB_PREFIX_ . 'menu` m WHERE m.`id_hook` = '. (int)$id_hook;
 		$id_menu = Db::getInstance()->getValue($sql);
 
 		return new Menu($id_menu);
