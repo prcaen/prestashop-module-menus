@@ -266,12 +266,7 @@ class AdminMenuLink extends AdminTab
 				<div class="case_product case ' . ($type == 'product' ? '' : 'hide'). '">
 					<label for="id_product">' . $this->l('Product ID:') . '</label>
 					<div class="margin-form">
-						<input type="text" name="id_product" id="id_product" size="30" />
-						<!--
-						<select name="id_product" id="id_product">';
-						echo '
-						</select><sup> *</sup>
-						-->
+						<input type="text" name="id_product" id="id_product" value="'.((!is_null($id_menu_link)) ? $id_link : '').'" size="30" /><sup> *</sup>
 					</div>
 				</div>
 				<div class="case_cms case ' . ($type == 'cms' ? '' : 'hide'). '">
@@ -452,6 +447,11 @@ class AdminMenuLink extends AdminTab
 					}
 					else
 						$this->_errors[] = $this->l('You must enter the required fields');
+					break;
+				case 'suppliers':
+				case 'manufacturers':
+					$isValid = true;
+					$link->id_link = 0;
 					break;
 			}
 
