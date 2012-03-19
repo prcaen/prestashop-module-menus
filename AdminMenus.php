@@ -144,20 +144,19 @@ class AdminMenus extends AdminTab
 					$id_hook = $menu->id_hook;
 					$module->unregisterHook($id_hook);
 				}
-
 				$id_hook = (int)(Tools::getValue('id_hook'));
 				$hook = new Hook($id_hook);
-				
+
 				if(!Validate::isLoadedObject($module))
 					$this->_errors[] = Tools::displayError('module cannot be loaded');
 				elseif (!$id_hook OR !Validate::isLoadedObject($hook))
 					$this->_errors[] = Tools::displayError('Hook cannot be loaded.');
-				elseif (!$module->registerHook($hook->name))
-					$this->_errors[] = Tools::displayError('An error occurred while transplanting module to hook.');
-				elseif (Hook::getModuleFromHook($id_hook, $id_module))
+				elseif (Hook::getModuleFromHook($id_hook, $module->id))
 					$this->_errors[] = Tools::displayError('This module is already transplanted to this hook.');
 				elseif (!$module->isHookableOn($hook->name))
 					$this->_errors[] = Tools::displayError('This module cannot be transplanted to this hook.');
+				elseif (!$module->registerHook($hook->name))
+					$this->_errors[] = Tools::displayError('An error occurred while transplanting module to hook.');
 				else
 					parent::postProcess();
 			}

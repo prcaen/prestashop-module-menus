@@ -348,6 +348,11 @@ class Menus extends Module
 		return $this->allHooks($params, __FUNCTION__);
 	}
 
+	public function hookMenuFooter($params)
+	{
+		return $this->allHooks($params, __FUNCTION__);
+	}
+
 	public function hookPayment($params)
 	{
 		return $this->allHooks($params, __FUNCTION__);
