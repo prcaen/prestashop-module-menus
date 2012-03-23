@@ -68,7 +68,6 @@ $_MODULE['<{menus}prestashop>menus_126896145b102b57fea22f6af12c3ffb'] = 'Temps d
 $_MODULE['<{menus}prestashop>menus_b29ccda66d6aa2190505d1c3a73027c6'] = 'Dernier cache';
 $_MODULE['<{menus}prestashop>menus_f4d1ea475eaa85102e2b4e6d95da84bd'] = 'Confirmer';
 $_MODULE['<{menus}prestashop>menus_c888438d14855d7d96a2724ee9c306bd'] = 'Mise à jour de la configuration';
-$_MODULE['<{menus}prestashop>menus_8cf04a9734132302f96da8e113e80ce5'] = 'Accueil';
 $_MODULE['<{menus}prestashop>menus.backend_06145a21dcec7395085b033e6e169b61'] = 'Menus';
 $_MODULE['<{menus}prestashop>menus.backend_00d23a76e43b46dae9ec7aa9dcbebb32'] = 'Activer';
 $_MODULE['<{menus}prestashop>menus.backend_b9f5c797ebbf55adccdd8539a65a0241'] = 'Désactiver';
